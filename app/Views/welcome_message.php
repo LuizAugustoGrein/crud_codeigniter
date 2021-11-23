@@ -60,7 +60,7 @@
                 <div class="title m-b-md">
                     <p>CRUD - CodeIgniter</p>
                     <a style="font-size: 40px; text-decoration: none; margin-right: 20px;" href="/produtos">Produtos</a>
-                    <a style="font-size: 40px; text-decoration: none; margin-left: 20px;" href="/clientes">Clientes</a>
+                    <a style="font-size: 40px; text-decoration: none; margin-left: 20px;" href="/fluxoestoques">Fluxo de Estoque</a>
                 </div>
             </div>
         </div>

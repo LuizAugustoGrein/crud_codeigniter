@@ -47,8 +47,7 @@ class Produtos extends Controller{
         $rules = [
             'nome' => 'required|min_length[2]|max_length[100]',
             'valor_custo' => 'required',
-            'valor_venda' => 'required',
-            'quantidade' => 'required'
+            'valor_venda' => 'required'
         ];
 
         if($this->validate($rules)){
@@ -99,6 +98,12 @@ class Produtos extends Controller{
         echo view('templates/header');
         echo view('produtos/delete_success');
         echo view('templates/footer');
+    }
+
+    public function getAll(){
+        $model = new ProdutosModel();
+        $produtos = $model->getProdutos($id);
+        return $produtos;
     }
 
 }

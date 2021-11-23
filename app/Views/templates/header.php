@@ -52,6 +52,12 @@
             font-weight: bold;
         }
 
+        select[readonly] {
+            background: #eee;
+            pointer-events: none;
+            touch-action: none;
+        }
+
     </style>
 </head>
 <body>

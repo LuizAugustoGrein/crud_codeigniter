@@ -27,10 +27,7 @@
         <input type="number" class="form-control" name="valor_venda" id="valor_venda" step="0.01" value="<?php echo isset($valor_venda) ? $valor_venda : set_value('valor_venda') ?>">
     </div>
 
-    <div class="form-group">
-        <label for="quantidade">Quantidade</label>
-        <input type="number" class="form-control" name="quantidade" id="quantidade" step="0.01" value="<?php echo isset($quantidade) ? $quantidade : set_value('quantidade') ?>">
-    </div>
+    <input type="hidden" name="quantidade" value="<?php echo isset($quantidade) ? $quantidade : set_value('quantidade') ?>">
 
     <input type="hidden" name="id" value="<?php echo isset($id) ? $id : set_value('id') ?>">
 

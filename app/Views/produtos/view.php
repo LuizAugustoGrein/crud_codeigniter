@@ -21,8 +21,8 @@
     <span><?php echo $produtos['quantidade'] ?></span>
     <hr>
     <span class="bold">Criado em:</span>
-    <span><?php echo $produtos['created_at'] ?></span>
+    <span><?php echo date("d/m/Y H:i:s",strtotime($produtos['created_at']));?></span>
     <hr>
     <span class="bold">Última Atualização:</span>
-    <span><?php echo $produtos['updated_at'] ?></span>
+    <span><?php echo date("d/m/Y H:i:s",strtotime($produtos['updated_at']));?></span>
 </div>

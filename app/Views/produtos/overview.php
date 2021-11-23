@@ -8,7 +8,7 @@
 </script>
 
 <div class="row my-3">
-    <a href="../" class="btn btn-info" style="margin-right: 5px">Voltar</a>
+    <a href="../" class="btn btn-info" style="margin-right: 5px">Página Inicial</a>
     <a href="/produtos/create" class="btn btn-primary">Novo Produto</a>
 </div>
 
