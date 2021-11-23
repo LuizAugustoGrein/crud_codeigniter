@@ -2,7 +2,9 @@
 
 namespace App\Controllers;
 use CodeIgniter\Controller;
+
 use App\Models\ProdutosModel;
+use App\Models\FluxoestoquesModel;
 
 class Produtos extends Controller{
 
@@ -95,6 +97,11 @@ class Produtos extends Controller{
     public function delete($id = null){
         $model = new ProdutosModel();
         $model->delete($id);
+
+        $model_fluxo = new FluxoestoquesModel();
+        $model_fluxo->where('produto_id',$id);
+        $model_fluxo->delete();
+
         echo view('templates/header');
         echo view('produtos/delete_success');
         echo view('templates/footer');

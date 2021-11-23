@@ -66,7 +66,7 @@ class Fluxoestoques extends Controller{
             'produto_id' => 'required',
         ];
 
-        if($this->request->getVar('quantidade') > @$produto['quantidade'] && $this->request->getVar('entrada_saida') == "s"){
+        if($this->request->getVar('quantidade') > $produto['quantidade'] && $this->request->getVar('entrada_saida') == "s"){
             echo view('templates/header');
             echo view('fluxoestoques/error-qtd');
             echo view('templates/footer');
@@ -78,9 +78,9 @@ class Fluxoestoques extends Controller{
             if($this->request->getVar('id') == null){
                 //ADICIONAR
                 if($this->request->getVar('entrada_saida') == 'e')
-                    $nova_qtd = @$produto['quantidade'] + $this->request->getVar('quantidade');
+                    $nova_qtd = $produto['quantidade'] + $this->request->getVar('quantidade');
                 else
-                    $nova_qtd = @$produto['quantidade'] - $this->request->getVar('quantidade');
+                    $nova_qtd = $produto['quantidade'] - $this->request->getVar('quantidade');
                 $model_produtos->save([
                     'id' => $this->request->getVar('produto_id'),
                     'quantidade' => $nova_qtd
@@ -90,15 +90,15 @@ class Fluxoestoques extends Controller{
                 if($fluxo['entrada_saida'] == $this->request->getVar('entrada_saida')){
                     $diferenca = $fluxo['quantidade'] - $this->request->getVar('quantidade');
                     if($this->request->getVar('entrada_saida') == 'e')
-                        $nova_qtd = @$produto['quantidade'] - $diferenca;
+                        $nova_qtd = $produto['quantidade'] - $diferenca;
                     else
-                        $nova_qtd = (@$produto['quantidade'] + $diferenca);
+                        $nova_qtd = ($produto['quantidade'] + $diferenca);
                 }else{
                     $diferenca = $this->request->getVar('quantidade');
                     if($this->request->getVar('entrada_saida') == 'e')
-                        $nova_qtd = @$produto['quantidade'] + ($diferenca * 2);
+                        $nova_qtd = $produto['quantidade'] + ($diferenca * 2);
                     else
-                        $nova_qtd = (@$produto['quantidade'] - ($diferenca * 2));
+                        $nova_qtd = ($produto['quantidade'] - ($diferenca * 2));
                 }
                 $model_produtos->save([
                     'id' => $this->request->getVar('produto_id'),
@@ -166,11 +166,10 @@ class Fluxoestoques extends Controller{
         $model_produtos = new ProdutosModel();
         $produto = $model_produtos->getProdutos($fluxo['produto_id']);
 
-        if($fluxo['entrada_saida'] == 'e'){
+        if($fluxo['entrada_saida'] == 'e')
             $nova_qtd = $produto['quantidade'] - $fluxo['quantidade'];
-        }else{
+        else
             $nova_qtd = $produto['quantidade'] + $fluxo['quantidade'];
-        }
         $model_produtos->save([
             'id' => $fluxo['produto_id'],
             'quantidade' => $nova_qtd
