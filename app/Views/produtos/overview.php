@@ -1,9 +1,6 @@
 <script>
     function confirmar(){
-        if(!confirm("Deseja excluir?")){
-            return false;
-        }
-        return true;
+        if(!confirm("Deseja excluir?")){ return false } else { return true };
     }
 </script>
 
@@ -23,39 +20,23 @@
         <th>Quantidade</th>
         <th>Ações</th>
     </tr>
-    <?php 
-        if(!empty($produtos) && is_array($produtos)): 
-            foreach($produtos as $produtos_item):
-    ?>
-
-        <tr>
-            <td>
-                <?php echo $produtos_item['nome'] ?>
-            </td>
-            <td>
-                <?php echo $produtos_item['valor_custo'] ?>
-            </td>
-            <td>
-                <?php echo $produtos_item['valor_venda'] ?>
-            </td>
-            <td>
-                <?php echo $produtos_item['quantidade'] ?>
-            </td>
-            <td class="text-center">
-                <a class="btn btn-success" href="<?php echo "/produtos/view/".$produtos_item['id'] ?>">Visualizar</a>
-                <a class="btn btn-warning" href="/produtos/edit/<?php echo $produtos_item['id'] ?>">Editar</a>
-                <a class="btn btn-danger" href="/produtos/delete/<?php echo $produtos_item['id'] ?>" onclick="return confirmar()">Excluir</a>
-            </td>
-        </tr>
-
-    <?php 
-            endforeach;
-        else:
-    ?>
+    <?php if(!empty($produtos) && is_array($produtos)): ?>
+        <?php foreach($produtos as $produtos_item):?>
+            <tr>
+                <td><?php echo $produtos_item['nome'] ?></td>
+                <td><?php echo $produtos_item['valor_custo'] ?></td>
+                <td><?php echo $produtos_item['valor_venda'] ?></td>
+                <td><?php echo $produtos_item['quantidade'] ?></td>
+                <td class="text-center">
+                    <a class="btn btn-success" href="<?php echo "/produtos/view/".$produtos_item['id'] ?>">Visualizar</a>
+                    <a class="btn btn-warning" href="/produtos/edit/<?php echo $produtos_item['id'] ?>">Editar</a>
+                    <a class="btn btn-danger" href="/produtos/delete/<?php echo $produtos_item['id'] ?>" onclick="return confirmar()">Excluir</a>
+                </td>
+            </tr>
+        <?php endforeach; ?>
+    <?php else: ?>
         <tr>
             <td colspan="2">Nenhum registro encontrado!</td>
         </tr>
-    <?php 
-        endif;
-    ?>
+    <?php endif; ?>
 </table>

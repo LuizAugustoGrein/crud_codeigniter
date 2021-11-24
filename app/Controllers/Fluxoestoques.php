@@ -114,8 +114,6 @@ class Fluxoestoques extends Controller{
                 'momento' => $this->request->getVar('momento'),
                 'produto_id' => $this->request->getVar('produto_id')
             ]);
-
-
             echo view('templates/header');
             echo view('fluxoestoques/success');
             echo view('templates/footer');
