@@ -44,7 +44,7 @@ class AddFluxoestoques extends Migration
         ]);
         $this->forge->addKey('id', true);
         $this->forge->createTable('fluxo_estoque');
-        $this->forge->add_field('CONSTRAINT FOREIGN KEY (produto_id) REFERENCES produtos(id)');
+        $this->forge->addField('CONSTRAINT FOREIGN KEY (produto_id) REFERENCES produtos(id)');
     }
 
     public function down()
