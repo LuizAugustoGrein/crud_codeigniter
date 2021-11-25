@@ -7,6 +7,7 @@ use App\Models\ProdutosModel;
 
 class Fluxoestoques extends Controller{
 
+    // OVERVIEW
     public function index(){
         $model = new FluxoestoquesModel();
         $model_produtos = new ProdutosModel();
@@ -20,6 +21,7 @@ class Fluxoestoques extends Controller{
         echo view('templates/footer');
     }
 
+    // VIEW
     public function view($id = null){
         $model = new FluxoestoquesModel();
         $model_produtos = new ProdutosModel();
@@ -39,6 +41,7 @@ class Fluxoestoques extends Controller{
         echo view('templates/footer');
     }
 
+    // CREATE
     public function create(){
         $model_produtos = new ProdutosModel();
         $data_produtos = [
@@ -51,13 +54,13 @@ class Fluxoestoques extends Controller{
         echo view('templates/footer');
     }
 
+    // STORE (CREATE OR UPDATE)
     public function store(){
         helper('form');
 
         $model = new FluxoestoquesModel();
         $model_produtos = new ProdutosModel();
         $produto = $model_produtos->getProdutos($this->request->getVar('produto_id'));
-        $fluxo = $model->getFluxoestoques($this->request->getVar('id'));
 
         $rules = [
             'entrada_saida' => 'required|min_length[1]|max_length[1]',
@@ -66,6 +69,7 @@ class Fluxoestoques extends Controller{
             'produto_id' => 'required',
         ];
 
+        /* VALIDAÇÃO PARA VERIFICAR SE VALOR NÃO ULTRAPASSA */
         if($this->request->getVar('quantidade') > $produto['quantidade'] && $this->request->getVar('entrada_saida') == "s"){
             echo view('templates/header');
             echo view('fluxoestoques/error-qtd');
@@ -74,38 +78,8 @@ class Fluxoestoques extends Controller{
         }
 
         if($this->validate($rules)){
-            /* VVV ATUALIZAR QUANTIDADE EM PRODUTOS VVV */
-            if($this->request->getVar('id') == null){
-                //ADICIONAR
-                if($this->request->getVar('entrada_saida') == 'e')
-                    $nova_qtd = $produto['quantidade'] + $this->request->getVar('quantidade');
-                else
-                    $nova_qtd = $produto['quantidade'] - $this->request->getVar('quantidade');
-                $model_produtos->save([
-                    'id' => $this->request->getVar('produto_id'),
-                    'quantidade' => $nova_qtd
-                ]);
-            }else{
-                //EDITAR
-                if($fluxo['entrada_saida'] == $this->request->getVar('entrada_saida')){
-                    $diferenca = $fluxo['quantidade'] - $this->request->getVar('quantidade');
-                    if($this->request->getVar('entrada_saida') == 'e')
-                        $nova_qtd = $produto['quantidade'] - $diferenca;
-                    else
-                        $nova_qtd = ($produto['quantidade'] + $diferenca);
-                }else{
-                    $diferenca = $this->request->getVar('quantidade');
-                    if($this->request->getVar('entrada_saida') == 'e')
-                        $nova_qtd = $produto['quantidade'] + ($diferenca * 2);
-                    else
-                        $nova_qtd = ($produto['quantidade'] - ($diferenca * 2));
-                }
-                $model_produtos->save([
-                    'id' => $this->request->getVar('produto_id'),
-                    'quantidade' => $nova_qtd
-                ]);
-            }
-            /* ^^^ FIM DE ATUALIZAÇÃO DE QUANTIDADE EM PRODUTOS ^^^ */
+
+            Fluxoestoques::updateQtd();
 
             $model->save([
                 'id' => $this->request->getVar('id'),
@@ -128,6 +102,7 @@ class Fluxoestoques extends Controller{
         }
     }
 
+    // EDIT
     public function edit($id = null){
         helper('form');
 
@@ -157,6 +132,7 @@ class Fluxoestoques extends Controller{
         echo view('templates/footer');
     }
 
+    // DELETE
     public function delete($id = null){
         $model = new FluxoestoquesModel();
         $fluxo = $model->getFluxoestoques($id);
@@ -178,6 +154,46 @@ class Fluxoestoques extends Controller{
         echo view('templates/header');
         echo view('fluxoestoques/delete_success');
         echo view('templates/footer');
+    }
+
+    // UPDATE QTD PELO FLUXO DE ESTOQUE
+    public function updateQtd(){
+        $model = new FluxoestoquesModel();
+        $model_produtos = new ProdutosModel();
+        $produto = $model_produtos->getProdutos($this->request->getVar('produto_id'));
+        $fluxo = $model->getFluxoestoques($this->request->getVar('id'));
+
+        /* VVV ATUALIZAR QUANTIDADE EM PRODUTOS VVV */
+        if($this->request->getVar('id') == null){
+            //ADICIONAR
+            if($this->request->getVar('entrada_saida') == 'e')
+                $nova_qtd = $produto['quantidade'] + $this->request->getVar('quantidade');
+            else
+                $nova_qtd = $produto['quantidade'] - $this->request->getVar('quantidade');
+            $model_produtos->save([
+                'id' => $this->request->getVar('produto_id'),
+                'quantidade' => $nova_qtd
+            ]);
+        }else{
+            //EDITAR
+            if($fluxo['entrada_saida'] == $this->request->getVar('entrada_saida')){
+                $diferenca = $fluxo['quantidade'] - $this->request->getVar('quantidade');
+                if($this->request->getVar('entrada_saida') == 'e')
+                    $nova_qtd = $produto['quantidade'] - $diferenca;
+                else
+                    $nova_qtd = ($produto['quantidade'] + $diferenca);
+            }else{
+                $diferenca = $this->request->getVar('quantidade');
+                if($this->request->getVar('entrada_saida') == 'e')
+                    $nova_qtd = $produto['quantidade'] + ($diferenca * 2);
+                else
+                    $nova_qtd = ($produto['quantidade'] - ($diferenca * 2));
+            }
+            $model_produtos->save([
+                'id' => $this->request->getVar('produto_id'),
+                'quantidade' => $nova_qtd
+            ]);
+        }
     }
 
 }
